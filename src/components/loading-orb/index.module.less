@@ -9,57 +9,77 @@
 
 .outerRing {
   position: absolute;
-  width: 256px; // w-64
-  height: 256px; // h-64
+  width: 320px; // 桌面端更大的外环
+  height: 320px;
   border-radius: 50%;
   border: 1px solid @seltopia-warm-gold;
   opacity: 0.3;
   
+  @media @tablet {
+    width: 280px; // 平板端中等大小
+    height: 280px;
+  }
+  
   @media @mobile {
-    width: 200px;
+    width: 200px; // 移动端紧凑大小
     height: 200px;
   }
 }
 
 .middleRing {
   position: absolute;
-  width: 192px; // w-48
-  height: 192px; // h-48
+  width: 240px; // 桌面端更大的中环
+  height: 240px;
   border-radius: 50%;
   border: 1px solid @seltopia-warm-gold;
   opacity: 0.4;
   
+  @media @tablet {
+    width: 210px; // 平板端中等大小
+    height: 210px;
+  }
+  
   @media @mobile {
-    width: 150px;
+    width: 150px; // 移动端紧凑大小
     height: 150px;
   }
 }
 
 .innerRing {
   position: absolute;
-  width: 128px; // w-32
-  height: 128px; // h-32
+  width: 160px; // 桌面端更大的内环
+  height: 160px;
   border-radius: 50%;
   border: 2px solid @seltopia-warm-gold;
   opacity: 0.6;
   
+  @media @tablet {
+    width: 140px; // 平板端中等大小
+    height: 140px;
+  }
+  
   @media @mobile {
-    width: 100px;
+    width: 100px; // 移动端紧凑大小
     height: 100px;
   }
 }
 
 .logoContainer {
   position: relative;
-  width: 112px; // w-28
-  height: 112px; // h-28
+  width: 128px; // 桌面端更大的 Logo 容器
+  height: 128px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   
+  @media @tablet {
+    width: 112px; // 平板端中等大小
+    height: 112px;
+  }
+  
   @media @mobile {
-    width: 88px;
+    width: 88px; // 移动端紧凑大小
     height: 88px;
   }
 }
