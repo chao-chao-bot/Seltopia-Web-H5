@@ -1,0 +1,23 @@
+@import '../../styles/globals.less';
+
+.button {
+  padding: 12px; // p-3
+  border-radius: 50%;
+  background-color: rgba(15, 20, 25, 0.5); // bg-opacity-50
+  backdrop-filter: blur(4px); // backdrop-blur-sm
+  border: none;
+  cursor: pointer;
+  transition: all @animation-normal ease;
+  
+  @media @mobile {
+    padding: 10px;
+  }
+  
+  &:hover {
+    background-color: rgba(15, 20, 25, 0.7); // hover:bg-opacity-70
+  }
+  
+  &:focus {
+    outline: none;
+  }
+}

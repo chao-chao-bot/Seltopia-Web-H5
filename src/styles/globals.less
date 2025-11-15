@@ -6,6 +6,12 @@
 @text-gray: #6b7280;
 @text-gray-light: #9ca3af;
 
+// Seltopia 主题色彩
+@seltopia-deep-navy: #0f1419;
+@seltopia-warm-gold: #d7b496;
+@seltopia-soft-cream: #f5f1eb;
+@seltopia-pure-white: #ffffff;
+
 // 响应式断点
 @mobile: ~'(max-width: 768px)';
 @tablet: ~'(min-width: 769px) and (max-width: 1024px)';
@@ -37,9 +43,17 @@
   --safe-area-inset-right: env(safe-area-inset-right);
 }
 
+@font-face {
+  font-family: 'regular';
+  src: url('../assets/fonts/regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap; 
+}
+
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'regular', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior: none;
