@@ -10,7 +10,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
       },
       manifest: {
         name: 'Seltopia - The Book of Answers',
@@ -23,16 +23,16 @@ export default defineConfig({
           {
             src: 'logo-192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
             src: 'logo-512.png',
             sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      }
-    })
+            type: 'image/png',
+          },
+        ],
+      },
+    }),
   ],
   resolve: {
     alias: {
@@ -41,8 +41,8 @@ export default defineConfig({
       '@/utils': resolve(__dirname, 'src/utils'),
       '@/assets': resolve(__dirname, 'src/assets'),
       '@/hooks': resolve(__dirname, 'src/hooks'),
-      '@/types': resolve(__dirname, 'src/types')
-    }
+      '@/types': resolve(__dirname, 'src/types'),
+    },
   },
   build: {
     target: 'es2015',
@@ -51,13 +51,13 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          animations: ['framer-motion', 'lottie-react']
-        }
-      }
-    }
+          animations: ['framer-motion'],
+        },
+      },
+    },
   },
   server: {
     host: '0.0.0.0',
-    port: 3000
-  }
+    port: 3000,
+  },
 })
