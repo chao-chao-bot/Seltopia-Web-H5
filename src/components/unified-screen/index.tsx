@@ -59,8 +59,8 @@ export function UnifiedScreen({
 
   // 根据模式设置容器样式
   const containerClassName = mode === 'loading' ? styles.loadingContainer : styles.revelationContainer;
-  const backgroundStyle = mode === 'revelation' && backgroundImage ? {
-    backgroundImage: `url(${backgroundImage})`
+  const backgroundStyle = mode === 'revelation' ? {
+    backgroundImage: `url(${backgroundImage}), url(/src/assets/images/背景图片/default.png)`
   } : {};
 
   const handleContainerClick = () => {
