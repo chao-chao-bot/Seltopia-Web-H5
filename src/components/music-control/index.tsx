@@ -4,14 +4,13 @@ import styles from './index.module.less';
 interface MusicControlProps {
   isPlaying: boolean;
   onToggle: () => void;
+  
 }
 
 export function MusicControl({ isPlaying, onToggle }: MusicControlProps) {
+  // 根据是否禁用动画选择不同的组件
   return (
-    <motion.button
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
+    <button
       onClick={onToggle}
       className={styles.button}
       aria-label={isPlaying ? 'Mute music' : 'Play music'}
@@ -111,6 +110,6 @@ export function MusicControl({ isPlaying, onToggle }: MusicControlProps) {
           </>
         )}
       </svg>
-    </motion.button>
+    </button>
   );
 }
