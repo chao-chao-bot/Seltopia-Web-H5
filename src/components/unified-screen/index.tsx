@@ -99,6 +99,51 @@ export function UnifiedScreen({
     }
   };
 
+  // 分享到Twitter的函数
+  const shareToTwitter = () => {
+    const shareText = 'Discover your wisdom with Seltopia - The Book of Answers 🔮✨';
+    const shareUrl = window.location.href;
+  
+    const tweetText = encodeURIComponent(`${shareText}\n\n${shareUrl}`);
+  
+    const twitterAppUrl = `twitter://post?message=${tweetText}`;
+    const twitterWebUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+  
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  
+    // 桌面端直接跳网页
+    if (!isMobile) {
+      window.open(twitterWebUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
+  
+    let didLeavePage = false;
+  
+    // 监听页面是否进入后台（即 App 被唤起）
+    const handleVisibility = () => {
+      if (document.hidden) {
+        didLeavePage = true;
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+  
+    // 尝试唤醒 Twitter App
+    window.location.href = twitterAppUrl;
+  
+    // 回退逻辑（App 未唤起就执行）
+    setTimeout(() => {
+      document.removeEventListener("visibilitychange", handleVisibility);
+  
+      if (!didLeavePage) {
+        alert('Twitter 分享已触发');
+        // App 未被打开 → 回退至网页版
+        window.open(twitterWebUrl, "_blank", "noopener,noreferrer");
+      }
+    }, 1200); // 1200ms 是移动深链的最佳实践时间（太长影响体验）
+  
+    console.log("Twitter 分享已触发");
+  };
+
   // 根据模式设置容器样式
   const containerClassName = mode === 'loading' ? styles.loadingContainer : styles.revelationContainer;
   const backgroundStyle = mode === 'revelation' ? {
@@ -170,7 +215,8 @@ export function UnifiedScreen({
               </button>
               <button
                 className={styles.actionButton}
-                aria-label="Share to Facebook"
+                aria-label="Share to Twitter"
+                onClick={shareToTwitter}
               >
                 <ShareIcon />
               </button>
