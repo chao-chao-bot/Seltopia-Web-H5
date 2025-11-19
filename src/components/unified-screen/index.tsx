@@ -4,6 +4,7 @@ import { SeltopiaLogo } from '../seltopia-logo';
 import { LoadingOrb } from '../loading-orb';
 import { StarryBackground } from '../starry-background';
 import { MusicControl } from '../music-control';
+import { THEMES_MAP } from '../../const';
 import styles from './index.module.less';
 
 // 简单的 SVG 图标组件
@@ -43,8 +44,15 @@ export function UnifiedScreen({
   // 使用 useMemo 缓存随机背景图片，避免重复执行
   const backgroundImage = useMemo(() => {
     if (mode === 'revelation') {
-      const imageNumber = Math.floor(Math.random() * 52) + 1;
-      return `/src/assets/images/背景图片/赋能-53/高清有字/赋能-高清有字/${imageNumber}.png`;
+      // 从 THEMES_MAP 中随机选取主题
+      const themeNames = Object.keys(THEMES_MAP) as (keyof typeof THEMES_MAP)[];
+      const randomThemeName = themeNames[Math.floor(Math.random() * themeNames.length)];
+      const maxImageCount = THEMES_MAP[randomThemeName];
+      
+      // 根据选择的主题生成随机图片编号
+      const imageNumber = Math.floor(Math.random() * maxImageCount) + 1;
+      
+      return `/src/assets/images/背景图片/${randomThemeName}/高清有字/${imageNumber}.png`;
     }
     return '';
   }, [mode]); // 只有当 mode 改变时才重新计算
