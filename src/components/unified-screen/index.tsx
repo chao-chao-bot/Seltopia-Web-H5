@@ -35,6 +35,7 @@ interface UnifiedScreenProps {
   onBack?: () => void;
 }
 
+
 export function UnifiedScreen({ 
   mode, 
   isMusicPlaying, 
@@ -56,6 +57,47 @@ export function UnifiedScreen({
     }
     return '';
   }, [mode]); // 只有当 mode 改变时才重新计算
+
+  // 下载当前背景图片的函数
+  const downloadCurrentImage = async () => {
+    if (!backgroundImage) {
+      console.error('没有背景图片可下载');
+      return;
+    }
+
+    try {
+      // 获取图片
+      const response = await fetch(backgroundImage);
+      if (!response.ok) {
+        throw new Error(`获取图片失败: ${response.status}`);
+      }
+      
+      // 转换为 blob
+      const blob = await response.blob();
+      
+      // 创建下载链接
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // 生成文件名
+      const fileName = `seltopia-wisdom-${Date.now()}.png`;
+      link.download = fileName;
+      
+      // 触发下载
+      document.body.appendChild(link);
+      link.click();
+      
+      // 清理
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      console.log('图片下载成功:', fileName);
+    } catch (error) {
+      console.error('下载失败:', error);
+      // 可以在这里添加用户提示
+    }
+  };
 
   // 根据模式设置容器样式
   const containerClassName = mode === 'loading' ? styles.loadingContainer : styles.revelationContainer;
@@ -122,6 +164,7 @@ export function UnifiedScreen({
               <button
                 className={styles.actionButton}
                 aria-label="Download image"
+                onClick={downloadCurrentImage}
               >
                 <DownloadIcon />
               </button>
