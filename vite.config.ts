@@ -5,6 +5,7 @@ import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: './', // 使用相对路径，解决静态部署问题
   plugins: [
     react(),
     VitePWA({
