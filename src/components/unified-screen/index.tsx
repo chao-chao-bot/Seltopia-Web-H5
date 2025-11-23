@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { SeltopiaLogo } from '../seltopia-logo';
 import { LoadingOrb } from '../loading-orb';
 import { StarryBackground } from '../starry-background';
@@ -42,21 +42,48 @@ export function UnifiedScreen({
   onMusicToggle, 
   onBack 
 }: UnifiedScreenProps) {
-  // 使用 useMemo 缓存随机背景图片，避免重复执行
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  // 🔥 真正的预加载：组件挂载时立即生成图片路径（不依赖 mode）
   const backgroundImage = useMemo(() => {
-    if (mode === 'revelation') {
-      // 从 THEMES_MAP 中随机选取主题
-      const themeNames = Object.keys(THEMES_MAP) as (keyof typeof THEMES_MAP)[];
-      const randomThemeName = themeNames[Math.floor(Math.random() * themeNames.length)];
-      const maxImageCount = THEMES_MAP[randomThemeName];
+    // 从 THEMES_MAP 中随机选取主题
+    const themeNames = Object.keys(THEMES_MAP) as (keyof typeof THEMES_MAP)[];
+    const randomThemeName = themeNames[Math.floor(Math.random() * themeNames.length)];
+    const maxImageCount = THEMES_MAP[randomThemeName];
+    
+    // 根据选择的主题生成随机图片编号
+    const imageNumber = Math.floor(Math.random() * maxImageCount) + 1;
+    return `/images/背景图片/${randomThemeName}/高清有字/${imageNumber}.png`;
+  }, []); // 🔥 空依赖数组 - 只在组件挂载时计算一次，立即开始预加载
+
+  // 🔥 图片预加载 - 组件挂载后立即开始下载（在 loading 阶段）
+  useEffect(() => {
+    if (backgroundImage) {
+      setImageLoaded(false);
+      setImageError(false);
       
-      // 根据选择的主题生成随机图片编号
-      const imageNumber = Math.floor(Math.random() * maxImageCount) + 1;
+      // 创建内存中的图片对象用于预加载
+      const img = new Image();
       
-      return `/images/背景图片/${randomThemeName}/高清有字/${imageNumber}.png`
+      img.onload = () => {
+        console.log('✅ 图片预加载成功:', backgroundImage);
+        setImageLoaded(true);
+      };
+      
+      img.onerror = () => {
+        console.error('❌ 图片预加载失败:', backgroundImage);
+        setImageError(true);
+        setImageLoaded(true);
+      };
+      
+      // 🔥 设置 src 后浏览器立即开始下载并缓存图片
+      // 即使这个 img 对象不在 DOM 中，图片也会被下载到浏览器缓存
+      img.src = backgroundImage;
+      
+      console.log('🚀 开始预加载图片:', backgroundImage);
     }
-    return '';
-  }, [mode]); // 只有当 mode 改变时才重新计算
+  }, [backgroundImage]);
 
   // 下载当前背景图片的函数
   const downloadCurrentImage = async () => {
@@ -147,7 +174,9 @@ export function UnifiedScreen({
   // 根据模式设置容器样式
   const containerClassName = mode === 'loading' ? styles.loadingContainer : styles.revelationContainer;
   const backgroundStyle = mode === 'revelation' ? {
-    backgroundImage: `url(${backgroundImage})`
+    backgroundImage: imageError 
+      ? `url(/images/背景图片/default.png)`
+      : `url(${backgroundImage})`
   } : {};
 
   const handleContainerClick = () => {
@@ -196,8 +225,13 @@ export function UnifiedScreen({
         </>
       ) : (
         <>
-          {/* Revelation content */}
-          <div className={styles.mainContent}>
+          {/* Revelation content - 只在图片加载完成后显示 */}
+          <motion.div 
+            className={styles.mainContent}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: imageLoaded ? 1 : 0 }}
+            transition={{ duration: 0.6 }}
+          >
             {/* Action Buttons - Below the text */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -227,7 +261,7 @@ export function UnifiedScreen({
                 />
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </>
       )}
     </motion.div>
