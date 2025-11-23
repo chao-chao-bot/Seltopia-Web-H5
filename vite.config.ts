@@ -11,7 +11,28 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        // 只预缓存必要的静态资源，不包含背景图片
+        globPatterns: ['**/*.{js,css,html,ico,svg,woff2}'],
+        // 排除背景图片目录
+        globIgnores: ['**/images/背景图片/**'],
+        // 运行时缓存策略：按需加载背景图片
+        runtimeCaching: [
+          {
+            // 匹配背景图片路径
+            urlPattern: /\/images\/背景图片\/.*\.png$/,
+            handler: 'CacheFirst', // 优先使用缓存，如果没有则从网络获取
+            options: {
+              cacheName: 'background-images-cache',
+              expiration: {
+                maxEntries: 30, // 最多缓存30张图片
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 缓存30天
+              },
+              cacheableResponse: {
+                statuses: [0, 200], // 只缓存成功的响应
+              },
+            },
+          },
+        ],
       },
       manifest: {
         name: 'Seltopia - The Book of Answers',
