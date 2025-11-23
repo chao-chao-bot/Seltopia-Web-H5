@@ -53,7 +53,7 @@ export function UnifiedScreen({
       // 根据选择的主题生成随机图片编号
       const imageNumber = Math.floor(Math.random() * maxImageCount) + 1;
       
-      return `/src/assets/images/背景图片/${randomThemeName}/高清有字/${imageNumber}.png`;
+      return `/images/背景图片/${randomThemeName}/高清有字/${imageNumber}.png`
     }
     return '';
   }, [mode]); // 只有当 mode 改变时才重新计算
