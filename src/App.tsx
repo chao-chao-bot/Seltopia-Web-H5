@@ -16,7 +16,7 @@ function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenState>('loading')
 
   // 音乐播放管理
-  const music = useMusic('/src/assets/audio/music.mp3')
+  const music = useMusic('/audio/music.mp3')
 
   useEffect(() => {
     // 设置页面标题
