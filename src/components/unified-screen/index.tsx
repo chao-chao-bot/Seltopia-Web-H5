@@ -51,7 +51,7 @@ export function UnifiedScreen({
   // 只在第一次渲染时生成图片路径
   if (!backgroundImageRef.current) {
     // 从 THEMES_MAP 中随机选取主题
-    const themeNames = Object.keys(THEMES_MAP) as (keyof typeof THEMES_MAP)[];
+    // const themeNames = Object.keys(THEMES_MAP) as (keyof typeof THEMES_MAP)[];
     // const randomThemeName = themeNames[Math.floor(Math.random() * themeNames.length)];
     const randomThemeName = '禅宗';
     const maxImageCount = THEMES_MAP[randomThemeName];
