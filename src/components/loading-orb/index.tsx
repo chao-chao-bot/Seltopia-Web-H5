@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { ImageWithFallback } from '../imageWithFallback';
-import logoImage from '@/assets/logos/logo.png';
 import styles from './index.module.less';
 
 export function LoadingOrb() {
@@ -79,7 +78,7 @@ export function LoadingOrb() {
           }}
         >
           <ImageWithFallback 
-            src={logoImage}
+              src="/logo.png"
             alt="Seltopia Logo"
             width={112}
             height={112}

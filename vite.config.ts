@@ -12,7 +12,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         // 只预缓存必要的静态资源，不包含背景图片
-        globPatterns: ['**/*.{js,css,html,ico,svg,woff2}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         // 排除背景图片目录
         globIgnores: ['**/images/背景图片/**'],
         // 运行时缓存策略：按需加载背景图片
