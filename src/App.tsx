@@ -14,6 +14,9 @@ function App() {
 
   // 屏幕状态管理
   const [currentScreen, setCurrentScreen] = useState<ScreenState>('loading')
+  
+  // 🔥 循环计数器：每次返回 loading 时递增，用于强制重新生成图片
+  const [cycleKey, setCycleKey] = useState(0)
 
   // 音乐播放管理
   const music = useMusic('/audio/music.mp3')
@@ -42,11 +45,13 @@ function App() {
   // 处理返回点击：从 revelation 回到 loading，然后3秒后再次显示 revelation
   const handleBack = () => {
     setCurrentScreen('loading')
+    setCycleKey(prev => prev + 1) // 🔥 递增循环计数，触发新图片生成
   }
 
   return (
     <div className={styles.app}>
       <UnifiedScreen
+        key={cycleKey} // 🔥 使用 key 强制组件重新挂载，生成新图片
         mode={currentScreen}
         isMusicPlaying={music.isPlaying}
         onMusicToggle={handleMusicToggle}

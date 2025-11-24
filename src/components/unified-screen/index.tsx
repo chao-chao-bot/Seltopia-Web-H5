@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useMemo, useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SeltopiaLogo } from '../seltopia-logo';
 import { LoadingOrb } from '../loading-orb';
 import { StarryBackground } from '../starry-background';
@@ -45,8 +45,11 @@ export function UnifiedScreen({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  // 🔥 真正的预加载：组件挂载时立即生成图片路径（不依赖 mode）
-  const backgroundImage = useMemo(() => {
+  // 
+  const backgroundImageRef = useRef<string>('');
+  
+  // 只在第一次渲染时生成图片路径
+  if (!backgroundImageRef.current) {
     // 从 THEMES_MAP 中随机选取主题
     const themeNames = Object.keys(THEMES_MAP) as (keyof typeof THEMES_MAP)[];
     const randomThemeName = themeNames[Math.floor(Math.random() * themeNames.length)];
@@ -54,8 +57,14 @@ export function UnifiedScreen({
     
     // 根据选择的主题生成随机图片编号
     const imageNumber = Math.floor(Math.random() * maxImageCount) + 1;
-    return `/images/背景图片/${randomThemeName}/高清有字/${imageNumber}.png`;
-  }, [mode]); // 🔥 空依赖数组 - 只在组件挂载时计算一次，立即开始预加载
+    backgroundImageRef.current = `/images/背景图片/${randomThemeName}/高清有字/${imageNumber}.png`;
+    
+    
+  }
+  
+  const backgroundImage = backgroundImageRef.current;
+  
+  
 
   // 🔥 图片预加载 - 组件挂载后立即开始下载（在 loading 阶段）
   useEffect(() => {
