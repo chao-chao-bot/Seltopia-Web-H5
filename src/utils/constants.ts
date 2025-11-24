@@ -1,6 +1,6 @@
 // 应用常量
 export const APP_CONFIG = {
-  name: 'Seltopia',
+  name: 'Seltopia-v1',
   version: '1.0.0',
   description: 'A mystical H5 experience with NFC integration',
 }
