@@ -77,6 +77,7 @@ export function UnifiedScreen({
       const img = new Image();
       
       img.onload = () => {
+        alert('图片预加载成功');
         console.log('✅ 图片预加载成功:', backgroundImage);
         setImageLoaded(true);
       };
@@ -172,7 +173,7 @@ export function UnifiedScreen({
       document.removeEventListener("visibilitychange", handleVisibility);
   
       if (!didLeavePage) {
-        alert('Twitter 分享已触发');
+        // alert('Twitter 分享已触发');
         // App 未被打开 → 回退至网页版
         window.open(twitterWebUrl, "_blank", "noopener,noreferrer");
       }
@@ -239,7 +240,7 @@ export function UnifiedScreen({
           <motion.div 
             className={styles.mainContent}
             initial={{ opacity: 0 }}
-            animate={{ opacity: imageLoaded ? 1 : 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
           >
             {/* Action Buttons - Below the text */}
