@@ -52,12 +52,13 @@ export function UnifiedScreen({
   if (!backgroundImageRef.current) {
     // 从 THEMES_MAP 中随机选取主题
     const themeNames = Object.keys(THEMES_MAP) as (keyof typeof THEMES_MAP)[];
-    const randomThemeName = themeNames[Math.floor(Math.random() * themeNames.length)];
+    // const randomThemeName = themeNames[Math.floor(Math.random() * themeNames.length)];
+    const randomThemeName = '禅宗';
     const maxImageCount = THEMES_MAP[randomThemeName];
     
     // 根据选择的主题生成随机图片编号
     const imageNumber = Math.floor(Math.random() * maxImageCount) + 1;
-    backgroundImageRef.current = `/images/背景图片/${randomThemeName}/高清有字/${imageNumber}.png`;
+    backgroundImageRef.current = `/images/背景图片-webp/${randomThemeName}/高清有字/${imageNumber}.webp`;
     
     
   }
