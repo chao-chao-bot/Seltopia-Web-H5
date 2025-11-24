@@ -77,7 +77,7 @@ export function UnifiedScreen({
       const img = new Image();
       
       img.onload = () => {
-        alert('图片预加载成功');
+        // alert('图片预加载成功');
         console.log('✅ 图片预加载成功:', backgroundImage);
         setImageLoaded(true);
       };
