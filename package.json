@@ -13,6 +13,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@sanity/client": "^7.13.0",
+    "@sanity/image-url": "^1.2.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.24",
     "react": "^19.1.1",

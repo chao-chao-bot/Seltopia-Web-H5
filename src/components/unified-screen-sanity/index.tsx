@@ -6,6 +6,9 @@ import { StarryBackground } from '../starry-background';
 import { MusicControl } from '../music-control';
 import { THEMES_MAP } from '../../const';
 import styles from './index.module.less';
+import { loader, urlFor } from './builder';
+import type { SanityDocument } from '@sanity/client';
+import { img } from 'framer-motion/client';
 
 // 简单的 SVG 图标组件
 const DownloadIcon = () => (
@@ -36,7 +39,7 @@ interface UnifiedScreenProps {
 }
 
 
-export function UnifiedScreen({ 
+export function UnifiedScreenSanity({ 
   mode, 
   isMusicPlaying, 
   onMusicToggle, 
@@ -44,6 +47,17 @@ export function UnifiedScreen({
 }: UnifiedScreenProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  const [images, setImages] = useState<string[]>([])
+
+  console.log('images====',images);
+  
+
+  useEffect(() => {
+    loader().then((data) => {
+      setImages(data.map((item: SanityDocument) => urlFor(item.imageRef).url()))
+    })
+  }, []);
 
   // 
   const backgroundImageRef = useRef<string>('');
@@ -177,6 +191,7 @@ export function UnifiedScreen({
     }
   };
 
+  return <img src={images[0]}></img>
   return (
     <motion.div 
       initial={{ opacity: 0 }}

@@ -5,6 +5,7 @@ import { useMusic } from '@/hooks/useMusic'
 import { APP_CONFIG } from '@/utils/constants'
 import styles from './App.module.less'
 import { UnifiedScreen } from './components'
+import { UnifiedScreenSanity } from './components/unified-screen-sanity'
 
 // 定义屏幕状态
 type ScreenState = 'loading' | 'revelation'
@@ -50,7 +51,7 @@ function App() {
 
   return (
     <div className={styles.app}>
-      <UnifiedScreen
+      <UnifiedScreenSanity
         key={cycleKey} // 🔥 使用 key 强制组件重新挂载，生成新图片
         mode={currentScreen}
         isMusicPlaying={music.isPlaying}

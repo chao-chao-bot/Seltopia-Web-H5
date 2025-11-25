@@ -1,35 +1,45 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8" />
-  
+
   <!-- 移动端适配核心配置 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
   <!-- iOS Safari 优化 -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Seltopia" />
-  
+
   <!-- Android Chrome 优化 -->
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#000000" />
-  
+
   <!-- 防止电话号码自动识别 -->
   <meta name="format-detection" content="telephone=no" />
+
+  <!-- Open Graph / Facebook Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://seltopia.com/" />
+  <meta property="og:title" content="A Moment of Insight from Seltopia" />
+  <meta property="og:description" content="I just received a piece of wisdom from my Seltopia. Discover your inner utopia." />
   
+
   <!-- 预加载关键字体 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-
   <link rel="preload" as="image" href="/logo.png">
   <link rel="preload" as="image" href="/logo_width_text.png">
-  
+
   <title>Seltopia - The Book of Answers-v1</title>
 </head>
+
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
+
 </html>
