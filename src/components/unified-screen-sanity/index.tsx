@@ -4,7 +4,7 @@ import { SeltopiaLogo } from '../seltopia-logo';
 import { LoadingOrb } from '../loading-orb';
 import { StarryBackground } from '../starry-background';
 import { MusicControl } from '../music-control';
-import { THEMES_MAP } from '../../const';
+import { THEMES_MAP, WEBSITE_URL } from '../../const';
 import styles from './index.module.less';
 import { getRandomImageByThemeAndTitle, urlFor } from './builder';
 
@@ -131,10 +131,7 @@ export function UnifiedScreenSanity({
 
   // 分享功能：优先尝试分享图片，回退到分享链接
   const shareToFacebook = async () => {
-    const title = "Seltopia - 标题";
-    // const text = `分享的文案： ${window.location.href}`;
-    const url = window.location.href;
-  
+    const title = "Seltopia";
     // 检查是否支持 Web Share API
     if (navigator.share) {
       try {
@@ -149,7 +146,7 @@ export function UnifiedScreenSanity({
             // 注意：分享文件时，在 text 中包含链接（因为不能同时用 url 参数）
             await navigator.share({
               title,
-              text:"分享文案（待定）",
+              text:WEBSITE_URL,
               files: [file]
             });
             console.log('✅ 图片分享成功');
@@ -162,8 +159,8 @@ export function UnifiedScreenSanity({
         // 回退：只分享链接
         await navigator.share({
           title,
-          text: "分享的文案：",
-          url
+          text: WEBSITE_URL,
+          url: WEBSITE_URL,
         });
         console.log('✅ 链接分享成功');
         return;
@@ -174,9 +171,8 @@ export function UnifiedScreenSanity({
   
     // 最终回退：直接打开 Facebook 分享对话框
     window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-      "_blank",
-      "width=600,height=400"
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`,
+      "_blank"
     );
   };
 

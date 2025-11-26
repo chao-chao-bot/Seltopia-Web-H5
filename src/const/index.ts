@@ -5,3 +5,6 @@ export const THEMES_MAP = {
   箴言: 80,
   智慧: 50,
 }
+
+// 官网地址
+export const WEBSITE_URL = 'https://seltopia.com'
