@@ -131,50 +131,46 @@ export function UnifiedScreenSanity({
 
   // 分享功能：优先尝试分享图片，回退到分享链接
   const shareToFacebook = async () => {
-    const title = "Seltopia - The Book of Answers";
+    const title = "Seltopia - 标题";
+    const text = `分享的文案： ${window.location.href}`;
     const url = window.location.href;
   
-    // 检查是否支持分享文件（主要是移动端）
-    if (navigator.share && navigator.canShare) {
+    // 检查是否支持 Web Share API
+    if (navigator.share) {
       try {
-        // 尝试获取图片并分享
-        if (backgroundImage) {
+        // 优先尝试分享图片（移动端）
+        if (backgroundImage && navigator.canShare) {
           const response = await fetch(backgroundImage);
           const blob = await response.blob();
-          const file = new File([blob], 'seltopia-wisdom.png', { type: 'image/png' });
+          const file = new File([blob], `seltopia-${Date.now()}.png`, { type: 'image/png' });
           
-          // 检查是否可以分享这个文件
+          // 检查是否可以分享文件
           if (navigator.canShare({ files: [file] })) {
+            // 注意：分享文件时，在 text 中包含链接（因为不能同时用 url 参数）
             await navigator.share({
               title,
-              text: "Check out my answer from Seltopia!",
-              files: [file],
-              url: window.location.href
+              text, // 文本中已包含链接
+              files: [file]
             });
             console.log('✅ 图片分享成功');
             return;
           }
         }
-      } catch (err) {
-        console.log("图片分享失败，尝试分享链接", err);
-      }
-    }
-    
-    // 回退方案1：使用 Web Share API 分享链接
-    if (navigator.share) {
-      try {
+        
+        // 回退：只分享链接
         await navigator.share({
           title,
-          text: "Check out my answer from Seltopia!",
+          text: "分享的文案：",
           url
         });
+        console.log('✅ 链接分享成功');
         return;
       } catch (err) {
-        console.log("Share cancelled", err);
+        console.log("分享取消或失败", err);
       }
     }
   
-    // 回退方案2：直接打开 Facebook 分享对话框
+    // 最终回退：直接打开 Facebook 分享对话框
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
       "_blank",
