@@ -138,3 +138,4 @@ uploadAllImages().catch((error) => {
   console.error('❌ 上传过程发生错误:', error)
   process.exit(1)
 })
+

@@ -129,17 +129,42 @@ export function UnifiedScreenSanity({
     }
   };
 
-  //TODO: 分享到Facebook的函数
+  // 分享功能：优先尝试分享图片，回退到分享链接
   const shareToFacebook = async () => {
     const title = "Seltopia - The Book of Answers";
-    const text = window.location.href;
     const url = window.location.href;
   
+    // 检查是否支持分享文件（主要是移动端）
+    if (navigator.share && navigator.canShare) {
+      try {
+        // 尝试获取图片并分享
+        if (backgroundImage) {
+          const response = await fetch(backgroundImage);
+          const blob = await response.blob();
+          const file = new File([blob], 'seltopia-wisdom.png', { type: 'image/png' });
+          
+          // 检查是否可以分享这个文件
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title,
+              text: "Check out my answer from Seltopia!",
+              files: [file]
+            });
+            console.log('✅ 图片分享成功');
+            return;
+          }
+        }
+      } catch (err) {
+        console.log("图片分享失败，尝试分享链接", err);
+      }
+    }
+    
+    // 回退方案1：使用 Web Share API 分享链接
     if (navigator.share) {
       try {
         await navigator.share({
           title,
-          text,
+          text: "Check out my answer from Seltopia!",
           url
         });
         return;
@@ -148,10 +173,11 @@ export function UnifiedScreenSanity({
       }
     }
   
-    // 回退到 Facebook Web 分享
+    // 回退方案2：直接打开 Facebook 分享对话框
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-      "_blank"
+      "_blank",
+      "width=600,height=400"
     );
   };
 
