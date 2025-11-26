@@ -132,7 +132,7 @@ export function UnifiedScreenSanity({
   // 分享功能：优先尝试分享图片，回退到分享链接
   const shareToFacebook = async () => {
     const title = "Seltopia - 标题";
-    const text = `分享的文案： ${window.location.href}`;
+    // const text = `分享的文案： ${window.location.href}`;
     const url = window.location.href;
   
     // 检查是否支持 Web Share API
@@ -149,7 +149,7 @@ export function UnifiedScreenSanity({
             // 注意：分享文件时，在 text 中包含链接（因为不能同时用 url 参数）
             await navigator.share({
               title,
-              text, // 文本中已包含链接
+              text:"分享文案（待定）",
               files: [file]
             });
             console.log('✅ 图片分享成功');
