@@ -6,9 +6,7 @@ import { StarryBackground } from '../starry-background';
 import { MusicControl } from '../music-control';
 import { THEMES_MAP } from '../../const';
 import styles from './index.module.less';
-import { loader, urlFor } from './builder';
-import type { SanityDocument } from '@sanity/client';
-import { img } from 'framer-motion/client';
+import { getRandomImageByThemeAndTitle, urlFor } from './builder';
 
 // 简单的 SVG 图标组件
 const DownloadIcon = () => (
@@ -45,70 +43,50 @@ export function UnifiedScreenSanity({
   onMusicToggle, 
   onBack 
 }: UnifiedScreenProps) {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-
-  const [images, setImages] = useState<string[]>([])
-
-  console.log('images====',images);
+  const [backgroundImage, setBackgroundImage] = useState<string>('');
   
-
-  useEffect(() => {
-    loader().then((data) => {
-      setImages(data.map((item: SanityDocument) => urlFor(item.imageRef).url()))
-    })
-  }, []);
-
-  // 
-  const backgroundImageRef = useRef<string>('');
+  // 随机选择的主题（只在组件挂载时选择一次）
+  const selectedThemeRef = useRef<string>('');
   
-  // 只在第一次渲染时生成图片路径
-  if (!backgroundImageRef.current) {
-    // 从 THEMES_MAP 中随机选取主题
-    // const themeNames = Object.keys(THEMES_MAP) as (keyof typeof THEMES_MAP)[];
-    // const randomThemeName = themeNames[Math.floor(Math.random() * themeNames.length)];
-    const randomThemeName = '禅宗';
-    const maxImageCount = THEMES_MAP[randomThemeName];
-    
-    // 根据选择的主题生成随机图片编号
-    const imageNumber = Math.floor(Math.random() * maxImageCount) + 1;
-    backgroundImageRef.current = `/images/背景图片-webp/${randomThemeName}/高清有字/${imageNumber}.webp`;
-    
-    
+  // 只在第一次渲染时选择主题
+  if (!selectedThemeRef.current) {
+    const themeNames = Object.keys(THEMES_MAP) as (keyof typeof THEMES_MAP)[];
+    const randomThemeName = themeNames[Math.floor(Math.random() * themeNames.length)];
+    selectedThemeRef.current = randomThemeName;
+    console.log('🎲 随机选择主题:', randomThemeName);
   }
-  
-  const backgroundImage = backgroundImageRef.current;
-  
-  
 
-  // 🔥 图片预加载 - 组件挂载后立即开始下载（在 loading 阶段）
+  // 从 Sanity 获取随机背景图片
   useEffect(() => {
-    if (backgroundImage) {
-      setImageLoaded(false);
-      setImageError(false);
-      
-      // 创建内存中的图片对象用于预加载
-      const img = new Image();
-      
-      img.onload = () => {
-        // alert('图片预加载成功');
-        console.log('✅ 图片预加载成功:', backgroundImage);
-        setImageLoaded(true);
-      };
-      
-      img.onerror = () => {
-        console.error('❌ 图片预加载失败:', backgroundImage);
+    const fetchRandomImage = async () => {
+      try {
+        const maxImageCount = THEMES_MAP[selectedThemeRef.current as keyof typeof THEMES_MAP];
+        // 根据选择的主题生成随机图片编号
+        const imageNumber = Math.floor(Math.random() * maxImageCount) + 1;
+        const title = `${selectedThemeRef.current}-${imageNumber}`;
+        const randomImage = await getRandomImageByThemeAndTitle(selectedThemeRef.current, title);
+        
+        if (randomImage && randomImage.image) {
+          const imageUrl = urlFor(randomImage.image)
+            .width(1920)
+            .quality(90)
+            .url();
+          
+          setBackgroundImage(imageUrl);
+          console.log('✅ 获取到背景图片:', randomImage.title, imageUrl);
+        } else {
+          console.warn('⚠️  未找到图片，使用默认图片');
+          setImageError(true);
+        }
+      } catch (error) {
+        console.error('❌ 获取背景图片失败:', error)        
         setImageError(true);
-        setImageLoaded(true);
-      };
-      
-      // 🔥 设置 src 后浏览器立即开始下载并缓存图片
-      // 即使这个 img 对象不在 DOM 中，图片也会被下载到浏览器缓存
-      img.src = backgroundImage;
-      
-      console.log('🚀 开始预加载图片:', backgroundImage);
-    }
-  }, [backgroundImage]);
+      }
+    };
+
+    fetchRandomImage();
+  }, []);
 
   // 下载当前背景图片的函数
   const downloadCurrentImage = async () => {
@@ -133,7 +111,7 @@ export function UnifiedScreenSanity({
       link.href = url;
       
       // 生成文件名
-      const fileName = `seltopia-wisdom-${Date.now()}.png`;
+      const fileName = `seltopia-${Date.now()}.png`;
       link.download = fileName;
       
       // 触发下载
@@ -151,7 +129,7 @@ export function UnifiedScreenSanity({
     }
   };
 
-  // 分享到Facebook的函数
+  //TODO: 分享到Facebook的函数
   const shareToFacebook = async () => {
     const title = "Seltopia - The Book of Answers";
     const text = window.location.href;
@@ -179,11 +157,6 @@ export function UnifiedScreenSanity({
 
   // 根据模式设置容器样式
   const containerClassName = mode === 'loading' ? styles.loadingContainer : styles.revelationContainer;
-  const backgroundStyle = mode === 'revelation' ? {
-    backgroundImage: imageError 
-      ? `url(/images/背景图片/default.png)`
-      : `url(${backgroundImage})`
-  } : {};
 
   const handleContainerClick = () => {
     if (mode === 'revelation' && onBack) {
@@ -191,16 +164,30 @@ export function UnifiedScreenSanity({
     }
   };
 
-  return <img src={images[0]}></img>
+  // 背景图片样式（始终存在，只是透明度不同）
+  const bgImageUrl = imageError 
+    ? `url(/images/背景图片/default.webp)`
+    : `url(${backgroundImage})`;
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: mode === 'revelation' ? 1.2 : 0.8, ease: "easeOut" }}
       className={containerClassName}
-      style={backgroundStyle}
       onClick={handleContainerClick}
     >
+      {/* 🔥 预渲染背景图层 - 始终存在，loading时隐藏，revelation时显示 */}
+      {backgroundImage && (
+        <div 
+          className={styles.prerenderedBackground}
+          style={{ 
+            backgroundImage: bgImageUrl,
+            opacity: mode === 'revelation' ? 1 : 0
+          }}
+        />
+      )}
+      
       {/* Starry Background - only show in loading mode */}
       {mode === 'loading' && <StarryBackground />}
       

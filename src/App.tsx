@@ -32,7 +32,7 @@ function App() {
     if (currentScreen === 'loading') {
       const timer = setTimeout(() => {
         setCurrentScreen('revelation')
-      }, 3000) // 3秒后切换
+      }, 4000) // 3秒后切换
 
       return () => clearTimeout(timer)
     }

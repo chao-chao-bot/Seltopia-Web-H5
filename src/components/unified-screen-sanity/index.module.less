@@ -20,9 +20,20 @@
 // Revelation 模式特定样式
 .revelationContainer {
   cursor: pointer;
+}
+
+// 🔥 预渲染背景图层 - 解决切换时的白屏问题
+.prerenderedBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  z-index: 0;
+  transition: opacity 0.3s ease-out;
 }
 
 // Music Control - 始终在右上角
