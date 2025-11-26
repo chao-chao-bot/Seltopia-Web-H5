@@ -154,6 +154,8 @@ export function UnifiedScreenSanity({
             });
             console.log('✅ 图片分享成功');
             return;
+          }else{
+            alert('无法分享图片');
           }
         }
         
