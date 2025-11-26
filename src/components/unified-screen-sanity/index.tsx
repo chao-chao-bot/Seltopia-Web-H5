@@ -148,7 +148,8 @@ export function UnifiedScreenSanity({
             await navigator.share({
               title,
               text: "Check out my answer from Seltopia!",
-              files: [file]
+              files: [file],
+              url: window.location.href
             });
             console.log('✅ 图片分享成功');
             return;
