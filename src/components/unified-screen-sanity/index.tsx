@@ -7,25 +7,9 @@ import { MusicControl } from '../music-control';
 import { THEMES_MAP, WEBSITE_URL } from '../../const';
 import styles from './index.module.less';
 import { getRandomImageByThemeAndTitle, urlFor } from './builder';
+import { DownloadIcon, ShareIcon } from '../ui/icon';
 
-// 简单的 SVG 图标组件
-const DownloadIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-    <polyline points="7,10 12,15 17,10"/>
-    <line x1="12" y1="15" x2="12" y2="3"/>
-  </svg>
-);
 
-const ShareIcon = () => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="18" cy="5" r="3"/>
-    <circle cx="6" cy="12" r="3"/>
-    <circle cx="18" cy="19" r="3"/>
-    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-  </svg>
-);
 
 type ScreenMode = 'loading' | 'revelation';
 
@@ -45,6 +29,8 @@ export function UnifiedScreenSanity({
 }: UnifiedScreenProps) {
   const [imageError, setImageError] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState<string>('');
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   
   // 随机选择的主题（只在组件挂载时选择一次）
   const selectedThemeRef = useRef<string>('');
@@ -68,10 +54,7 @@ export function UnifiedScreenSanity({
         const randomImage = await getRandomImageByThemeAndTitle(selectedThemeRef.current, title);
         
         if (randomImage && randomImage.image) {
-          const imageUrl = urlFor(randomImage.image)
-            .width(1920)
-            .quality(90)
-            .url();
+          const imageUrl = urlFor(randomImage.image).url();
           
           setBackgroundImage(imageUrl);
           console.log('✅ 获取到背景图片:', randomImage.title, imageUrl);
@@ -129,6 +112,44 @@ export function UnifiedScreenSanity({
     }
   };
 
+  // 显示全局提示
+  const showGlobalToast = (message: string) => {
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
+  };
+
+  // 复制链接到剪贴板
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(WEBSITE_URL);
+      showGlobalToast(`已复制 ${WEBSITE_URL}`);
+      console.log('✅ 链接已复制到剪贴板');
+      return true;
+    } catch (err) {
+      console.error('❌ 复制失败:', err);
+      // 回退方案：使用旧的 execCommand 方法
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = WEBSITE_URL;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showGlobalToast(`已复制 ${WEBSITE_URL}`);
+        return true;
+      } catch (fallbackErr) {
+        console.error('❌ 回退复制方案也失败:', fallbackErr);
+        showGlobalToast('复制失败，请手动复制');
+        return false;
+      }
+    }
+  };
+
   // 分享功能：优先尝试分享图片，回退到分享链接
   const shareToFacebook = async () => {
     const title = "Seltopia";
@@ -143,16 +164,12 @@ export function UnifiedScreenSanity({
           
           // 检查是否可以分享文件
           if (navigator.canShare({ files: [file] })) {
-            // 注意：分享文件时，在 text 中包含链接（因为不能同时用 url 参数）
             await navigator.share({
               title,
-              text:WEBSITE_URL,
               files: [file]
             });
             console.log('✅ 图片分享成功');
             return;
-          }else{
-            alert('无法分享图片');
           }
         }
         
@@ -168,7 +185,6 @@ export function UnifiedScreenSanity({
         console.log("分享取消或失败", err);
       }
     }
-  
     // 最终回退：直接打开 Facebook 分享对话框
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`,
@@ -198,6 +214,18 @@ export function UnifiedScreenSanity({
       className={containerClassName}
       onClick={handleContainerClick}
     >
+      {/* 全局提示 Toast */}
+      {showToast && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className={styles.toast}
+        >
+          {toastMessage}
+        </motion.div>
+      )}
+
       {/* 🔥 预渲染背景图层 - 始终存在，loading时隐藏，revelation时显示 */}
       {backgroundImage && (
         <div 
@@ -265,7 +293,10 @@ export function UnifiedScreenSanity({
               <button
                 className={styles.actionButton}
                 aria-label="Share to Facebook"
-                onClick={shareToFacebook}
+                onClick={async () => {
+                  await copyToClipboard();
+                  await shareToFacebook();
+                }}
               >
                 <ShareIcon />
               </button>
