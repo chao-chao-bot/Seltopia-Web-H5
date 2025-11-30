@@ -2,6 +2,8 @@
 
 .button {
   padding: 16px; // 桌面端更大的按钮
+  width: 56px;   // 24px (svg) + 16px * 2 (padding)
+  height: 56px;
   border-radius: 50%;
   background-color: rgba(15, 20, 25, 0.5);
   backdrop-filter: blur(4px);
@@ -17,6 +19,8 @@
   
   @media @tablet {
     padding: 14px; // 平板端中等大小
+    width: 50px;   // 22px (svg) + 14px * 2 (padding)
+    height: 50px;
     
     &:hover {
       transform: scale(1.03); // 平板端较小的缩放
@@ -25,6 +29,8 @@
   
   @media @mobile {
     padding: 10px; // 移动端紧凑大小
+    width: 44px;   // 20px (svg) + 10px * 2 (padding)
+    height: 44px;
     
     &:hover {
       transform: none; // 移动端不使用缩放效果
