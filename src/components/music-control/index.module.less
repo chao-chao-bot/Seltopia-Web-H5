@@ -1,57 +1,8 @@
 @import '../../styles/globals.less';
 
 .button {
-  padding: 16px; // 桌面端更大的按钮
-  border-radius: 50%;
-  background-color: rgba(15, 20, 25, 0.5);
-  backdrop-filter: blur(4px);
-  border: none;
-  cursor: pointer;
-  transition: all @animation-normal ease;
+  // 使用共享的圆形按钮样式
+  .circular-action-button();
   
-  // 桌面端悬停效果更明显
-  &:hover {
-    background-color: rgba(15, 20, 25, 0.7);
-    transform: scale(1.05);
-  }
-  
-  @media @tablet {
-    padding: 14px; // 平板端中等大小
-    
-    &:hover {
-      transform: scale(1.03); // 平板端较小的缩放
-    }
-  }
-  
-  @media @mobile {
-    padding: 10px; // 移动端紧凑大小
-    
-    &:hover {
-      transform: none; // 移动端不使用缩放效果
-    }
-    
-    &:active {
-      transform: scale(0.95); // 移动端使用按压效果
-    }
-  }
-  
-  &:focus {
-    outline: none;
-  }
-  
-  // SVG 图标大小适配
-  svg {
-    width: 24px;
-    height: 24px;
-    
-    @media @tablet {
-      width: 22px;
-      height: 22px;
-    }
-    
-    @media @mobile {
-      width: 20px;
-      height: 20px;
-    }
-  }
+  // MusicControl 特有的样式（SVG 波浪动画）在 JSX 中已定义
 }

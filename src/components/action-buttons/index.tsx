@@ -18,8 +18,8 @@ export function ActionButtons({
 }: ActionButtonsProps) {
   return (
     <motion.div
-    initial={{ opacity: 0, y: 10, x: '-50%' }}  // ✅ 添加 x: '-50%'
-    animate={{ opacity: 1, y: 0, x: '-50%' }} 
+      initial={{ opacity: 0, y: 10, x: '-50%' }}  // ✅ 添加 x: '-50%'
+      animate={{ opacity: 1, y: 0, x: '-50%' }}
       transition={{ duration: 0.8, delay: 0.6 }}
       className={styles.actionButtons}
       onClick={(e) => e.stopPropagation()}
@@ -38,12 +38,10 @@ export function ActionButtons({
       >
         <ShareIcon />
       </button>
-      <div className={styles.musicControlInline}>
-        <MusicControl 
-          isPlaying={isMusicPlaying} 
-          onToggle={onMusicToggle}
-        />
-      </div>
+      <MusicControl
+        isPlaying={isMusicPlaying}
+        onToggle={onMusicToggle}
+      />
     </motion.div>
   );
 }
