@@ -37,7 +37,7 @@ export function useImageManager(cycleKey: number) {
         const randomImage = await getRandomImageByThemeAndTitle(selectedThemeRef.current, title)
 
         if (randomImage && randomImage.image) {
-          const imageUrl = urlFor(randomImage.image).url()
+          const imageUrl = urlFor(randomImage.image).format('webp').url()
           console.log('🔗 获取到图片 URL:', randomImage.title, imageUrl)
 
           // 使用 Image 对象预加载
