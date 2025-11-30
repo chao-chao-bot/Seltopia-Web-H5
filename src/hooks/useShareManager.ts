@@ -62,7 +62,8 @@ export function useShareManager(showGlobalToast: (message: string) => void) {
 
   // 分享功能
   const shareContent = async (backgroundImage: string) => {
-    const title = 'Seltopia'
+    const title =
+      'A Moment of Insight from Seltopia: I just received a piece of wisdom from my Seltopia. Discover your inner utopia.'
 
     if (navigator.share) {
       try {
@@ -70,7 +71,9 @@ export function useShareManager(showGlobalToast: (message: string) => void) {
         if (backgroundImage && navigator.canShare) {
           const response = await fetch(backgroundImage)
           const blob = await response.blob()
-          const file = new File([blob], `seltopia-${Date.now()}.png`, { type: 'image/png' })
+          const file = new File([blob], `Seltopia_Insight_${moment().format('YYYY_MM_DD')}.png`, {
+            type: 'image/png',
+          })
 
           if (navigator.canShare({ files: [file] })) {
             await navigator.share({
