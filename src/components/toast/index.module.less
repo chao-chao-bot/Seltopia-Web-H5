@@ -2,33 +2,28 @@
 
 .toast {
   position: fixed;
-  top: 80px;
+  top: 25vh;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.85);
-  color: @seltopia-soft-cream;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  background-color: #0f1932;
+  color: #D7B496;
+  padding: 24px 18px;
+  font-size: 15px;
   z-index: 9999;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
-  white-space: nowrap;
-  
+  border-radius: 33px;
+  text-align: center;
   @media @tablet {
-    top: 70px;
+    top: 25vh;
     font-size: 13px;
-    padding: 10px 20px;
+    padding: 24px 18px;
   }
   
   @media @mobile {
-    top: 60px;
+    top: 25vh;
     font-size: 12px;
-    padding: 8px 16px;
-    max-width: 80%;
-    white-space: normal;
-    text-align: center;
+    padding: 18px;
   }
 }
 

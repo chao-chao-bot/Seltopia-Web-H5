@@ -26,7 +26,7 @@ export function UnifiedScreenSanity({
   // 使用自定义 hooks
   const imageManager = useImageManager(cycleKey);
   
-  const { showToast, toastMessage, showGlobalToast } = useToast();
+  const { showToast, showGlobalToast } = useToast();
   const { mode, resetToLoading } = useModeSwitcher(
     imageManager.imageReady, 
     imageManager.markFallbackUsed
@@ -41,8 +41,8 @@ export function UnifiedScreenSanity({
 
   // 处理分享按钮点击
   const handleShare = async () => {
-    await shareManager.copyToClipboard();
-    await shareManager.shareContent(imageManager.backgroundImage);
+     shareManager.copyToClipboard();
+     shareManager.shareContent(imageManager.backgroundImage);
   };
 
   // 根据模式设置容器样式
@@ -70,7 +70,7 @@ export function UnifiedScreenSanity({
       onClick={handleContainerClick}
     >
       {/* 全局提示 Toast */}
-      <Toast message={toastMessage} visible={showToast} />
+      <Toast visible={showToast} />
 
       {/* 🔥 预渲染背景图层 - 始终存在，loading时隐藏，revelation时显示 */}
       <div
