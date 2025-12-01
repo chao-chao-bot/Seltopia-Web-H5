@@ -47,7 +47,7 @@ export function useShareManager(showGlobalToast: (message: string) => void) {
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `Seltopia_Insight_${moment().format('YYYY_MM_DD')}.png`
+      link.download = `Seltopia_Insight_${moment().format('YYYY_MM_DD')}`
 
       document.body.appendChild(link)
       link.click()
