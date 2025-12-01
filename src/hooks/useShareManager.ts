@@ -35,9 +35,6 @@ export function useShareManager(showGlobalToast: (message: string) => void) {
     // 🧪 测试：使用本地图片而不是背景图片
     const testImageUrl = '/images/download.png'
 
-    console.log('⏱️ 开始下载测试图片:', testImageUrl)
-    const startTime = performance.now()
-
     try {
       const response = await fetch(testImageUrl)
       if (!response.ok) {
@@ -54,12 +51,8 @@ export function useShareManager(showGlobalToast: (message: string) => void) {
       link.click()
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
-
-      const totalTime = performance.now() - startTime
-      alert(`✅ 图片下载成功，总耗时: ${totalTime.toFixed(2)}ms`)
     } catch (error) {
-      const totalTime = performance.now() - startTime
-      console.error(`❌ 下载失败 (耗时 ${totalTime.toFixed(2)}ms):`, error)
+      console.error(`❌ 下载失败:`, error)
     }
   }
 
