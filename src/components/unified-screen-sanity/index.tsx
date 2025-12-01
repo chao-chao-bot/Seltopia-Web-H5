@@ -26,8 +26,6 @@ export function UnifiedScreenSanity({
   // 使用自定义 hooks
   const imageManager = useImageManager(cycleKey);
   
-  
-  
   const { showToast, showGlobalToast } = useToast();
   const { mode, resetToLoading } = useModeSwitcher(
     imageManager.imageReady, 

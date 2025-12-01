@@ -34,6 +34,7 @@ export function useImageManager(cycleKey: number) {
       try {
         const maxImageCount = THEMES_MAP[selectedThemeRef.current as keyof typeof THEMES_MAP]
         const imageNumber = Math.floor(Math.random() * maxImageCount) + 1
+        selectedImageNumberRef.current = imageNumber
         const title = `${selectedThemeRef.current}-${imageNumber}`
         const randomImage = await getRandomImageByThemeAndTitle(selectedThemeRef.current, title)
 
