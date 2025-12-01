@@ -26,6 +26,8 @@ export function UnifiedScreenSanity({
   // 使用自定义 hooks
   const imageManager = useImageManager(cycleKey);
   
+  
+  
   const { showToast, showGlobalToast } = useToast();
   const { mode, resetToLoading } = useModeSwitcher(
     imageManager.imageReady, 
@@ -122,7 +124,11 @@ export function UnifiedScreenSanity({
             <ActionButtons
               isMusicPlaying={isMusicPlaying}
               onMusicToggle={onMusicToggle}
-              onDownload={() => shareManager.downloadImage(imageManager.backgroundImage)}
+              onDownload={() => shareManager.downloadImage({
+                theme: imageManager.theme,
+                imageNumber: imageManager.imageNumber,
+                isFallback: imageManager.isFallback,
+              })}
               onShare={handleShare}
             />
           </motion.div>

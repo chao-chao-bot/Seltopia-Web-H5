@@ -31,9 +31,19 @@ export function useShareManager(showGlobalToast: (message: string) => void) {
   }
 
   // 下载图片
-  const downloadImage = async (_backgroundImage: string) => {
+  const downloadImage = async ({
+    theme,
+    imageNumber,
+    isFallback,
+  }: {
+    theme: string
+    imageNumber: number
+    isFallback: boolean
+  }) => {
     // 🧪 测试：使用本地图片而不是背景图片
-    const testImageUrl = '/images/download.png'
+    const testImageUrl = !isFallback
+      ? `/images/背景图片/${theme}/高清有字/${imageNumber}.png`
+      : `/images/default.webp`
 
     try {
       const response = await fetch(testImageUrl)
@@ -45,7 +55,7 @@ export function useShareManager(showGlobalToast: (message: string) => void) {
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `Seltopia_Test_${moment().format('YYYY_MM_DD')}.png`
+      link.download = `Seltopia_Insight_${moment().format('YYYY_MM_DD')}`
 
       document.body.appendChild(link)
       link.click()

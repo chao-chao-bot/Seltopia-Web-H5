@@ -8,6 +8,7 @@ export function useImageManager(cycleKey: number) {
   const [imageReady, setImageReady] = useState(false)
   const [backgroundImage, setBackgroundImage] = useState<string>('/images/背景图片/default.webp')
   const selectedThemeRef = useRef<string>('')
+  const selectedImageNumberRef = useRef<number>(1) // ✅ 新增：保存图片编号
   const switchedRef = useRef<boolean>(false)
   const currentCycleRef = useRef<number>(0) // ✅ 新增：跟踪当前轮次
 
@@ -99,6 +100,9 @@ export function useImageManager(cycleKey: number) {
   return {
     imageReady,
     backgroundImage,
+    theme: selectedThemeRef.current, // ✅ 返回主题
+    imageNumber: selectedImageNumberRef.current, // ✅ 返回编号
+    isFallback: switchedRef.current,
     markFallbackUsed,
   }
 }
