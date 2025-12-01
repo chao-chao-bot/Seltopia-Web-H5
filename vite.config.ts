@@ -25,7 +25,7 @@ export default defineConfig({
             options: {
               cacheName: 'background-images-cache',
               expiration: {
-                maxEntries: 30, // 最多缓存30张图片
+                maxEntries: 200, // 最多缓存200张图片
                 maxAgeSeconds: 30 * 24 * 60 * 60, // 缓存30天
               },
               cacheableResponse: {
