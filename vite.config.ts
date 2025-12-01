@@ -15,6 +15,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         // 排除背景图片目录
         globIgnores: ['**/images/背景图片/**'],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // ✅ 增加到 10 MB
         // 运行时缓存策略：按需加载背景图片
         runtimeCaching: [
           {
