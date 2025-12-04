@@ -13,10 +13,6 @@ function App() {
   // 音乐播放管理
   const music = useMusic('/audio/music.mp3')
 
-  useEffect(() => {
-    // 设置页面标题
-    document.title = APP_CONFIG.name
-  }, [music])
 
   // 处理音乐切换
   const handleMusicToggle = () => {
