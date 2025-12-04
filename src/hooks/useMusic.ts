@@ -16,7 +16,7 @@ export const useMusic = (audioSrc: string): UseMusicReturn => {
     const audio = new Audio(audioSrc)
     audio.loop = true // 单曲循环
     audio.volume = 0.5 // 默认音量
-    audio.preload = 'auto'
+    audio.preload = 'none'
     audio.autoplay = true
 
     audioRef.current = audio

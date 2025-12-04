@@ -9,79 +9,32 @@
   bottom: 28vh; // 桌面端更高的位置
   left: 50%;
   z-index: 10;
+  width: 56px;
+  height: 56px;
   
   @media @tablet {
     gap: 28px; // 平板端中等间距
     bottom: 25vh;
+    width: 50px;
+    height: 50px;
   }
   
   @media @mobile {
     gap: 24px; // 移动端紧凑间距
     bottom: 22vh;
+    width: 44px;
+    height: 44px;
   }
 }
 
 .actionButton {
-  padding: 16px; // 桌面端更大的按钮
-  border-radius: 50%;
-  background-color: rgba(15, 20, 25, 0.5);
-  backdrop-filter: blur(4px);
-  border: none;
-  cursor: pointer;
-  transition: all @animation-normal ease;
-  display: inline-flex; // 使用 flex 布局
-  align-items: center; // 垂直居中
-  justify-content: center; // 水平居中
-  aspect-ratio: 1; // 确保按钮是正方形
-  width: auto; // 自动宽度
-  height: auto; // 自动高度
+  // 使用共享的圆形按钮样式
+  .circular-action-button();
   
-  // 桌面端悬停效果
-  &:hover {
-    background-color: rgba(15, 20, 25, 0.7);
-    transform: scale(1.1);
-  }
-  
-  @media @tablet {
-    padding: 14px; // 平板端中等大小
-    
-    &:hover {
-      transform: scale(1.08); // 平板端较小的缩放
-    }
-  }
-  
-  @media @mobile {
-    padding: 12px; // 移动端紧凑大小
-    
-    &:hover {
-      transform: none; // 移动端不使用悬停效果
-    }
-    
-    &:active {
-      transform: scale(0.95); // 移动端使用按压效果
-    }
-  }
-  
-  &:focus {
-    outline: none;
-  }
-  
-  // 图标样式
+  // 图标特定样式
   svg {
     color: @seltopia-warm-gold;
     transition: transform @animation-normal ease;
-    width: 24px;
-    height: 24px;
-    
-    @media @tablet {
-      width: 22px;
-      height: 22px;
-    }
-    
-    @media @mobile {
-      width: 20px;
-      height: 20px;
-    }
   }
   
   &:hover svg {
@@ -93,9 +46,5 @@
   }
 }
 
-.musicControlInline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
+
 

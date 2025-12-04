@@ -122,7 +122,11 @@ export function UnifiedScreenSanity({
             <ActionButtons
               isMusicPlaying={isMusicPlaying}
               onMusicToggle={onMusicToggle}
-              onDownload={() => shareManager.downloadImage(imageManager.backgroundImage)}
+              onDownload={() => shareManager.downloadImage({
+                theme: imageManager.theme,
+                imageNumber: imageManager.imageNumber,
+                isFallback: imageManager.isFallback,
+              })}
               onShare={handleShare}
             />
           </motion.div>

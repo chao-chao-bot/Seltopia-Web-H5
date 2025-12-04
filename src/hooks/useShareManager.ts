@@ -31,14 +31,22 @@ export function useShareManager(showGlobalToast: (message: string) => void) {
   }
 
   // 下载图片
-  const downloadImage = async (backgroundImage: string) => {
-    if (!backgroundImage) {
-      console.error('没有背景图片可下载')
-      return
-    }
+  const downloadImage = async ({
+    theme,
+    imageNumber,
+    isFallback,
+  }: {
+    theme: string
+    imageNumber: number
+    isFallback: boolean
+  }) => {
+    // 🧪 测试：使用本地图片而不是背景图片
+    const testImageUrl = !isFallback
+      ? `/images/背景图片/${theme}/高清有字/${imageNumber}.png`
+      : `/images/default.webp`
 
     try {
-      const response = await fetch(backgroundImage)
+      const response = await fetch(testImageUrl)
       if (!response.ok) {
         throw new Error(`获取图片失败: ${response.status}`)
       }
@@ -47,16 +55,14 @@ export function useShareManager(showGlobalToast: (message: string) => void) {
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `Seltopia_Insight_${moment().format('YYYY_MM_DD')}.png`
+      link.download = `Seltopia_Insight_${moment().format('YYYY_MM_DD')}`
 
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
-
-      console.log('图片下载成功')
     } catch (error) {
-      console.error('下载失败:', error)
+      console.error(`❌ 下载失败:`, error)
     }
   }
 

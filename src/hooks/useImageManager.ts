@@ -8,6 +8,7 @@ export function useImageManager(cycleKey: number) {
   const [imageReady, setImageReady] = useState(false)
   const [backgroundImage, setBackgroundImage] = useState<string>('/images/背景图片/default.webp')
   const selectedThemeRef = useRef<string>('')
+  const selectedImageNumberRef = useRef<number>(1) // ✅ 新增：保存图片编号
   const switchedRef = useRef<boolean>(false)
   const currentCycleRef = useRef<number>(0) // ✅ 新增：跟踪当前轮次
 
@@ -33,6 +34,7 @@ export function useImageManager(cycleKey: number) {
       try {
         const maxImageCount = THEMES_MAP[selectedThemeRef.current as keyof typeof THEMES_MAP]
         const imageNumber = Math.floor(Math.random() * maxImageCount) + 1
+        selectedImageNumberRef.current = imageNumber
         const title = `${selectedThemeRef.current}-${imageNumber}`
         const randomImage = await getRandomImageByThemeAndTitle(selectedThemeRef.current, title)
 
@@ -42,6 +44,7 @@ export function useImageManager(cycleKey: number) {
 
           // 使用 Image 对象预加载
           const img = new Image()
+          img.fetchPriority = 'high'
           img.onload = () => {
             // ✅ 检查是否已被取消
             if (cancelled) {
@@ -98,6 +101,9 @@ export function useImageManager(cycleKey: number) {
   return {
     imageReady,
     backgroundImage,
+    theme: selectedThemeRef.current, // ✅ 返回主题
+    imageNumber: selectedImageNumberRef.current, // ✅ 返回编号
+    isFallback: switchedRef.current,
     markFallbackUsed,
   }
 }

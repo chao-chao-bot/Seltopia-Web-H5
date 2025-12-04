@@ -15,6 +15,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         // 排除背景图片目录
         globIgnores: ['**/images/背景图片/**'],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // ✅ 增加到 10 MB
         // 运行时缓存策略：按需加载背景图片
         runtimeCaching: [
           {
@@ -24,7 +25,7 @@ export default defineConfig({
             options: {
               cacheName: 'background-images-cache',
               expiration: {
-                maxEntries: 30, // 最多缓存30张图片
+                maxEntries: 200, // 最多缓存200张图片
                 maxAgeSeconds: 30 * 24 * 60 * 60, // 缓存30天
               },
               cacheableResponse: {
