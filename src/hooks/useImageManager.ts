@@ -6,7 +6,7 @@ import { getRandomImageByThemeAndTitle, urlFor } from '../components/unified-scr
 
 export function useImageManager(cycleKey: number) {
   const [imageReady, setImageReady] = useState(false)
-  const [backgroundImage, setBackgroundImage] = useState<string>('/images/背景图片/default.webp')
+  const [backgroundImage, setBackgroundImage] = useState<string>('/images/default.webp')
   const selectedThemeRef = useRef<string>('')
   const selectedImageNumberRef = useRef<number>(1) // ✅ 新增：保存图片编号
   const switchedRef = useRef<boolean>(false)
@@ -24,7 +24,7 @@ export function useImageManager(cycleKey: number) {
   useEffect(() => {
     // 重置状态
     setImageReady(false)
-    setBackgroundImage('/images/背景图片/default.webp')
+    setBackgroundImage('/images/default.webp')
     switchedRef.current = false
     currentCycleRef.current = cycleKey // ✅ 记录当前轮次
 
