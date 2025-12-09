@@ -100,15 +100,17 @@ export function useShareManager(showGlobalToast: (message: string) => void) {
         console.log('✅ 链接分享成功')
         return
       } catch (err) {
-        console.log('分享取消或失败', err)
+        alert('分享失败，catch error')
       }
+    } else {
+      // 最终回退：直接打开 Facebook 分享对话框
+      // window.open(
+      //   `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`,
+      //   '_blank'
+      // )
+      alert('分享失败，请手动分享')
+      return
     }
-
-    // 最终回退：直接打开 Facebook 分享对话框
-    window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(WEBSITE_URL)}`,
-      '_blank'
-    )
   }
 
   return {
